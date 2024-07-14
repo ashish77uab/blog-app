@@ -1,20 +1,27 @@
 'use client'
 import TextInput from '@/components/forms/TextInput'
+import ToastMsg from '@/components/toast/ToastMsg'
 import { register } from '@/utils/api/auth'
 import { reactIcons } from '@/utils/icons'
 import { registerValidation } from '@/utils/validation'
 import { Form, Formik } from 'formik'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-
+import { toast } from "react-toastify";
 const RegisterForm = () => {
+  const router = useRouter()
   const [toggle, setToggle] = useState(false)
   const handleSubmit = async (values) => {
     try {
-      const res = await register(values);
-      console.log(res)
+      const { status } = await register(values);
+      if (status === 201) {
+        toast.success(<ToastMsg title={"Register successfully"} />);
+        router.push('/login')
+      }
     } catch (err) {
       console.log(err);
+      toast.error(<ToastMsg title={err?.message} />);
     }
   };
   return (

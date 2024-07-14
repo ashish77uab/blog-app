@@ -40,6 +40,15 @@
   body {
     @apply font-poppins bg-zinc-100 !important;
   }
+  table{
+    @apply w-full
+  }
+  th{
+    @apply bg-slate-800 text-white font-semibold py-3 px-4 first:rounded-l-lg last:rounded-r-lg;
+  }
+  td{
+    @apply text-center  font-semibold py-3 px-4 first:rounded-l-lg last:rounded-r-lg;
+  }
 }
 @layer components {
   .heading-3 {

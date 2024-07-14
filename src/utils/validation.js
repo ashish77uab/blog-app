@@ -21,3 +21,8 @@ export const registerValidation = yup.object().shape({
         .string()
         .oneOf([yup.ref("password"), null], "Passwords must match").required("confirmPassword is also required"),
 });
+export const taskValidation = yup.object().shape({
+    title: yup.string().max(40).required("Required"),
+    body: yup.string().max(200).required("Required"),
+
+});

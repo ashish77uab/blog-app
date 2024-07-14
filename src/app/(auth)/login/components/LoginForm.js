@@ -6,13 +6,21 @@ import { loginValidation } from '@/utils/validation'
 import { Form, Formik } from 'formik'
 import Link from 'next/link'
 import React, { useState } from 'react'
-
+import { useRouter } from 'next/navigation'
+import { toast } from "react-toastify";
+import ToastMsg from '@/components/toast/ToastMsg'
+import { setCookies } from '@/actions/cookie'
 const LoginForm = () => {
+  const router = useRouter()
   const [toggle, setToggle] = useState(false)
   const handleSubmit = async (values) => {
     try {
-      const res = await login(values);
-      console.log(res)
+      const { status } = await login(values);
+      if (status === 201) {
+        toast.success(<ToastMsg title={"Login successfully"} />);
+        setCookies('loggedIn', true)
+        router.push('/')
+      }
     } catch (err) {
       console.log(err);
     }

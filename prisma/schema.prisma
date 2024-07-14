@@ -9,8 +9,8 @@ datasource db {
 }
 model Task {
   id       String @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String @unique
+  slug     String? @unique
   title    String
   body     String
-  isCompleted Boolean
+  isCompleted Boolean?  @default(false)
 }
