@@ -2,7 +2,7 @@ import React from 'react'
 import prisma from '@/utils/prisma'
 import TaskActionsButton from './components/TaskActionsButton'
 import Link from 'next/link'
-const revalidate = 0;
+export const dynamic = 'force-dynamic'
 const Task = async () => {
   const tasks = await prisma.task.findMany()
   return (

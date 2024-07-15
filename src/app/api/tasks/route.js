@@ -1,8 +1,8 @@
+export const revalidate = 0;
 import prisma from "@/utils/prisma";
 import { NextResponse } from "next/server";
 import { revalidatePath } from 'next/cache'
 import { BOOLEAN_VALUE } from "@/utils/constants";
-
 export const POST = async (req) => {
     const data = await req.json()
     try {
@@ -11,7 +11,7 @@ export const POST = async (req) => {
                 ...data, slug: data?.title.split(' ').join('-'),
             },
         });
-        revalidatePath('/task',)
+        revalidatePath('/task')
         return NextResponse.json({
             taskCreated
         }, { status: 201 })
@@ -32,7 +32,7 @@ export const DELETE = async (req) => {
                 slug: slug,
             },
         });
-        revalidatePath('/task',)
+        revalidatePath('/task')
         return NextResponse.json({
             taskDeleted
         }, { status: 201 })
@@ -58,7 +58,7 @@ export const PUT = async (req) => {
             }
         });
         console.log(statusUpdated, 'statusUpdated')
-        revalidatePath('/task',)
+        revalidatePath('/task')
         return NextResponse.json({
             statusUpdated
         }, { status: 201 })

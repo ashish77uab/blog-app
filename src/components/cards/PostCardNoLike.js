@@ -31,7 +31,7 @@ const PostCardNoLike = ({ post }) => {
         <p className="text-muted line-clamp-4 pt-1">{post.message}</p>
         <div className="flex mt-1 flex-wrap">
           {post.tags.map((tag, index) => (
-            <span className="ml-1 cursor-pointer hover:underline text-blue-600 font-medium text-sm">
+            <span key={index} className="ml-1 cursor-pointer hover:underline text-blue-600 font-medium text-sm">
               #{tag}
             </span>
           ))}
