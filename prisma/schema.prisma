@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,10 +6,56 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
 model Task {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  slug     String? @unique
-  title    String
-  body     String
-  isCompleted Boolean?  @default(false)
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  slug        String?  @unique
+  title       String
+  body        String
+  isCompleted Boolean? @default(false)
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPERADMIN
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  fullName  String
+  password  String
+  email     String   @unique
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+}
+
+model Question {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  questionName  String
+  options       Option[]
+  correctAnswer AnswerType
+  level         Int
+  Game          Game?      @relation(fields: [gameId], references: [id])
+  gameId        String?    @db.ObjectId
+}
+
+model Option {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  optionName String
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String   @db.ObjectId
+}
+
+model Game {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  gameName  String
+  questions Question[]
+}
+
+enum AnswerType {
+  A
+  B
+  C
+  D
 }

@@ -1,10 +1,11 @@
-
+"use server"
 import Link from "next/link";
-import { getLoggedIn } from "@/actions/cookie";
+import { getLoggedIn, deleteCookie } from "@/actions/cookie";
 import RightItem from "./subComponent/RightItem";
 
 const Navbar = () => {
   const user = getLoggedIn()
+  
   
   return (
     <nav className="flex items-center  shadow-navbar  py-3 sticky top-0 w-full bg-white z-[50]">
@@ -15,7 +16,7 @@ const Navbar = () => {
               Ashish AK47
             </Link>
           </div>
-          <RightItem user={user}/>
+          <RightItem user={user} removeToken={deleteCookie}/>
         </div>
       </div>
     </nav>

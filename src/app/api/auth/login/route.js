@@ -9,7 +9,11 @@ export const POST = async (req) => {
   const { email, password } = await req.json()
 
   try {
-    const oldUser = await User.findOne({ email });
+    const oldUser =  await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    })
     if (!oldUser)
       return NextResponse.json({ message: "User doesn't exist" }, { status: 404 })
 
@@ -19,7 +23,7 @@ export const POST = async (req) => {
       return NextResponse.json({ message: "Invalid Password" }, { status: 404 })
 
     const token = jwt.sign(
-      { email: oldUser.email, id: oldUser._id },
+      { email: oldUser.email, id: oldUser._id,role: oldUser.role },
       process.env.JWTSECRET,
       {
         expiresIn: "1d",
@@ -27,7 +31,9 @@ export const POST = async (req) => {
     );
 
     return NextResponse.json({
-      message: 'Login successful'
+      message: 'Login successful',
+      token: token,
+      role: oldUser.role
     }, { status: 201 })
   } catch (error) {
     return NextResponse.json({ message: "Something went wrong" }, { status: 500 })

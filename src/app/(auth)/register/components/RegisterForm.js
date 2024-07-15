@@ -1,4 +1,5 @@
 'use client'
+import SelectField from '@/components/forms/SelectField'
 import TextInput from '@/components/forms/TextInput'
 import ToastMsg from '@/components/toast/ToastMsg'
 import { register } from '@/utils/api/auth'
@@ -9,6 +10,11 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { toast } from "react-toastify";
+const ROLE = {
+  ADMIN: 'ADMIN',
+  USER: 'USER',
+  SUPERADMIN: 'SUPERADMIN',
+}
 const RegisterForm = () => {
   const router = useRouter()
   const [toggle, setToggle] = useState(false)
@@ -24,6 +30,9 @@ const RegisterForm = () => {
       toast.error(<ToastMsg title={err?.message} />);
     }
   };
+  const roleOptions = Object.keys(ROLE)?.map(role => (
+    { label: role, value: role }
+  ))
   return (
 
     <>
@@ -33,7 +42,8 @@ const RegisterForm = () => {
           lastName: "",
           email: "",
           password: "",
-          confirmPassword: ""
+          confirmPassword: "",
+          role: ROLE.USER
         }}
         validationSchema={registerValidation}
         onSubmit={handleSubmit}
@@ -118,6 +128,13 @@ const RegisterForm = () => {
                   </span>
                 }
               />
+              <SelectField
+              label={'Select Role Of User'}
+                options={roleOptions}
+                name='role'
+                value={values.role}
+                onChange={handleChange}
+                onBlur={handleBlur} />
               <div>
                 <p className="text-muted">
                   Already have an account?{" "}

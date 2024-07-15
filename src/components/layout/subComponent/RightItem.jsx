@@ -4,10 +4,10 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { reactIcons } from "@/utils/icons";
 import { useRouter } from "next/navigation";
-const RightItem = ({user}) => {
+const RightItem = ({ user, removeToken }) => {
     const router = useRouter();
   const handleLogout = () => {
-    router.push("/login");
+    removeToken('loggedIn')
   };
   return (
    <div className="flex gap-2 items-center">
@@ -55,13 +55,39 @@ const RightItem = ({user}) => {
                         <Menu.Item>
                           {({ active }) => (
                             <button
-                              onClick={() => router.push(`/profile/${user._id}`)}
+                              onClick={() => router.push(`/dashboard/create-game`)}
                               className={`${active
                                 ? "bg-violet-500 text-white"
                                 : "text-gray-900"
                                 } group flex w-full items-center rounded-md px-2 py-2 text-base`}
                             >
-                              Profile
+                              Create Game
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => router.push(`/task`)}
+                              className={`${active
+                                ? "bg-violet-500 text-white"
+                                : "text-gray-900"
+                                } group flex w-full items-center rounded-md px-2 py-2 text-base`}
+                            >
+                              Task
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => router.push(`/dashboard`)}
+                              className={`${active
+                                ? "bg-violet-500 text-white"
+                                : "text-gray-900"
+                                } group flex w-full items-center rounded-md px-2 py-2 text-base`}
+                            >
+                              Go to dashboard
                             </button>
                           )}
                         </Menu.Item>

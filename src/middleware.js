@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server'
 
-const protectedRoutes = ["/middleware"];
+const protectedRoutes = ["/middleware","/dashboard/create-game"];
 const isLoginRegister = ["/login", "/register"]
 export function middleware(request) {
     const currentUser = request.cookies.get('loggedIn')?.value
