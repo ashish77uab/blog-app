@@ -21,6 +21,13 @@ enum Role {
   SUPERADMIN
 }
 
+enum AnswerType {
+  A
+  B
+  C
+  D
+}
+
 model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   fullName  String
@@ -33,29 +40,15 @@ model User {
 model Question {
   id            String     @id @default(auto()) @map("_id") @db.ObjectId
   questionName  String
-  options       Option[]
+  options       String[]
   correctAnswer AnswerType
   level         Int
   Game          Game?      @relation(fields: [gameId], references: [id])
   gameId        String?    @db.ObjectId
 }
 
-model Option {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  optionName String
-  question   Question @relation(fields: [questionId], references: [id])
-  questionId String   @db.ObjectId
-}
-
 model Game {
   id        String     @id @default(auto()) @map("_id") @db.ObjectId
   gameName  String
   questions Question[]
-}
-
-enum AnswerType {
-  A
-  B
-  C
-  D
 }

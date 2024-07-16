@@ -1,3 +1,5 @@
+import LinkItems from "./components/LinkItems";
+
 export default function DashboardLayout({ children }) {
     return (
         <div className="min-h-screen bg-gray-50 flex ">
@@ -5,6 +7,7 @@ export default function DashboardLayout({ children }) {
                 <h4 className='font-semibold text-2xl'>
                     Dashboard
                 </h4>
+                <LinkItems/>
             </div>
             <div className="flex-grow ">
                  {children}

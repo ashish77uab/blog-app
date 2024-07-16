@@ -5,7 +5,8 @@ import prisma from '@/utils/prisma'
 const EditTask = async ({ params }) => {
     const slug = params.slug
     const taskDetail = await prisma.task.findFirst({
-        where: { slug }
+        where: { slug },
+       
     })
     return (
         <div className='flex items-center justify-center my-10'>

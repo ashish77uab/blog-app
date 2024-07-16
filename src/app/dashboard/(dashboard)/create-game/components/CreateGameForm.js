@@ -11,7 +11,7 @@ const CreateGameForm = () => {
     const router = useRouter()
     const handleSubmit = async (values) => {
         try {
-            const res = await createGame('create-game' , values);
+            const res = await createGame('games/create-game' , values);
             if (res.status === 201) {
                 toast.success(<ToastMsg title={"Created successfully"} />);
             }

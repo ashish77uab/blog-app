@@ -55,6 +55,19 @@ const RightItem = ({ user, removeToken }) => {
                         <Menu.Item>
                           {({ active }) => (
                             <button
+                              onClick={() => router.push(`/games`)}
+                              className={`${active
+                                ? "bg-violet-500 text-white"
+                                : "text-gray-900"
+                                } group flex w-full items-center rounded-md px-2 py-2 text-base`}
+                            >
+                             Games
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
                               onClick={() => router.push(`/dashboard/create-game`)}
                               className={`${active
                                 ? "bg-violet-500 text-white"
