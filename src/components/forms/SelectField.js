@@ -9,6 +9,7 @@ const SelectField = ({
   name,
   helperText,
   options,
+  firstOption,
   ...rest
 }) => {
   return (
@@ -19,6 +20,7 @@ const SelectField = ({
         name={name}
           {...rest} className={`input-field  ${className} ${error ? "border-red-500" : "border-zinc-200"
             }`}>
+               <option key={firstOption?.value} value={firstOption?.value}>{firstOption?.label}</option>
               {
                 options?.map((option)=>(
                   <option key={option.value} value={option.value}>{option.label}</option>

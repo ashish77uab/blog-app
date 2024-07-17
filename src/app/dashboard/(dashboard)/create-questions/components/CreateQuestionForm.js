@@ -81,6 +81,7 @@ const CreateQuestionForm = ({ games }) => {
                         <div className="px-4 space-y-2">
 
                             <SelectField
+                              firstOption={ { label: 'Select Game', value: '' }}
                                 label={'Select game'}
                                 options={gameOptions}
                                 name='gameId'
@@ -147,6 +148,7 @@ const CreateQuestionForm = ({ games }) => {
                                                         onChange={handleChange}
                                                         onBlur={handleBlur} />
                                                     <SelectField
+                                                       firstOption={ { label: 'Select Answer', value: '' }}
                                                         label={'Select Level'}
                                                         options={levelOptions}
                                                         name={`questions[${index}].level`}

@@ -40,17 +40,60 @@
   body {
     @apply font-poppins bg-zinc-100 !important;
   }
-  table{
-    @apply w-full
+  table {
+    @apply w-full;
   }
-  th{
+  th {
     @apply bg-slate-800 text-white font-semibold py-3 px-4 first:rounded-l-lg last:rounded-r-lg;
   }
-  td{
+  td {
     @apply text-center  font-semibold py-3 px-4 first:rounded-l-lg last:rounded-r-lg;
   }
 }
 @layer components {
+  .option {
+    clip-path: polygon(10% 1%, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0% 50%);
+  }
+  .animate-correct {
+    animation: correct 3s ease forwards;
+  }
+  .animate-wrong {
+    animation: wrong 3s ease forwards;
+  }
+
+  @keyframes correct {
+    0%,
+    22%,
+    42% {
+     @apply bg-indigo-900;
+    }
+    20%,
+    40%,
+    60% {
+      @apply bg-blue-600;
+    }
+    62%,
+    100% {
+     @apply bg-green-900
+    }
+  }
+
+  @keyframes wrong {
+    0%,
+    22%,
+    42% {
+     @apply bg-indigo-900;
+    }
+    20%,
+    40%,
+    60% {
+      @apply bg-blue-600;
+    }
+    62%,
+    100% {
+     @apply bg-red-900
+    }
+  }
   .heading-3 {
     @apply text-4xl font-semibold;
   }
@@ -69,7 +112,7 @@
   .btn {
     @apply px-10 py-2 font-semibold font-poppins text-base rounded-md disabled:opacity-60 disabled:cursor-not-allowed;
   }
-  .btn-sm{
+  .btn-sm {
     @apply text-sm px-6 font-medium py-2;
   }
   .btn-green {
@@ -81,7 +124,7 @@
   .btn-red {
     @apply btn bg-red-500 text-white;
   }
-  .btn-sm{
+  .btn-sm {
     @apply text-sm px-6 font-medium py-2;
   }
   .text-muted {
@@ -105,13 +148,14 @@
   .disabled-item {
     @apply opacity-50 hover:bg-white hover:text-amber-500;
   }
-  .pagination-item-style a,.disabled-item a{
+  .pagination-item-style a,
+  .disabled-item a {
     @apply w-full h-full flex-center px-4 py-1;
   }
   .skeleton {
     @apply bg-zinc-300 animate-pulse;
   }
-  .form-error{
+  .form-error {
     @apply text-red-600 text-sm;
   }
 }

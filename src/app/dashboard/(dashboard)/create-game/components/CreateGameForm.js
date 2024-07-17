@@ -57,7 +57,7 @@ const CreateGameForm = () => {
                         </div>
                         <footer className="py-4 text-center font-medium">
                             <button type="submit" className="btn-green">
-                                {isSubmitting ? 'Loading...' : 'Register'}
+                                {isSubmitting ? 'Loading...' : 'Create'}
                             </button>
                         </footer>
                     </Form>
