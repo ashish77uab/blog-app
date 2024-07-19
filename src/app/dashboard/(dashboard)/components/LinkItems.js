@@ -14,6 +14,10 @@ const LinkItems = () => {
         {
             title:'Create Questions',
             path:'/dashboard/create-questions'
+        },
+        {
+            title:'Go to games',
+            path:'/games-list'
         }
     ]
   return (

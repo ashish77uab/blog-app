@@ -6,15 +6,16 @@ import Timer from './Timer';
 import useSound from "use-sound";
 
 const priceArray = [
-    '1000',
-    '5000',
-    '10000',
-    '25000',
-    '100000',
-    '500000',
-    '2500000',
-    '70000000',
-    '100000000',
+    "1000",
+    "5000",
+    "10000",
+    "25000",
+    "100000",
+    "500000",
+    "2500000",
+    "5000000",
+    "10000000",
+    "70000000",
 ]
 const PlayGameArea = ({ games }) => {
     const [earned,setEarned]=useState(0)
@@ -45,18 +46,31 @@ const PlayGameArea = ({ games }) => {
         setTimeout(() => {
             if (answer === correctAnswer) {
                 correctAnswerSound()
-                setCurrentQuestion(prev=>prev+1)
-                setAnimate(false)
-                setAnswer('')
-                setIsCorrect(false)
-                setIsWrong(false)
+               setTimeout(() => {
+                   if (currentQuestion < priceArray?.length-1){
+                       setCurrentQuestion(prev => prev + 1)
+                       setAnimate(false)
+                       setAnswer('')
+                       setIsCorrect(false)
+                       setIsWrong(false)
+                   }else {
+                      setAnimate(false)
+                       setAnswer('')
+                       setIsCorrect(false)
+                       setIsWrong(false)
+                       setStopGame(true)
+                   }
+               }, 2000);
                 
             } else {
                 wrongAnswerSound()
-                setStopGame(true)
+               setTimeout(() => {
+                   setStopGame(true)
+                
+               }, 2000);
             }
 
-        }, 5000)
+        }, 6000)
 
     }
 

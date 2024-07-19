@@ -62,16 +62,21 @@
   }
 
   @keyframes correct {
-    0%,
-    22%,
-    42% {
-     @apply bg-indigo-900;
-    }
+    5%,
+    10%,
     20%,
-    40%,
-    60% {
-      @apply bg-blue-600;
+    35% ,
+    50%{
+     @apply bg-red-900;
     }
+    15%,
+    25%,
+    40% ,
+    45%,
+    55%{
+      @apply bg-green-900;
+    }
+    
     62%,
     100% {
      @apply bg-green-900
@@ -79,15 +84,19 @@
   }
 
   @keyframes wrong {
-    0%,
-    22%,
-    42% {
-     @apply bg-indigo-900;
-    }
+    5%,
+    10%,
     20%,
-    40%,
-    60% {
-      @apply bg-blue-600;
+    35% ,
+    50% {
+     @apply bg-red-900;
+    }
+    15%,
+    25%,
+    40% ,
+    45%,
+    55%{
+      @apply bg-green-900;
     }
     62%,
     100% {

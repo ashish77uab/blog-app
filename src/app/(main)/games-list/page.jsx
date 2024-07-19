@@ -12,7 +12,7 @@ const CreateGame = async () => {
                         <h2 className="text-xl font-semibold">Games List</h2>
                       
                     </div>
-                    <ul className='space-y-2 mt-4'>
+                    <ul className='space-y-2 mt-4 min-w-[1000px]'>
                     {games?.games?.map((game,index) => (
                             <li key={game.id} className={` border bg-white shadow-sm border-gray-200 flex items-center gap-4 rounded-md p-8 `}>
                                 <div className='flex-grow'>
