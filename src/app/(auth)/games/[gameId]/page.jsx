@@ -12,7 +12,6 @@ const PlayGame = async ({ params }) => {
             questions: true,
         },
     })
-    console.log(games, 'games')
     return (
         <div className='h-screen w-full'>
             <div className="w-full h-full  absolute top-0 left-0 z-[1]">

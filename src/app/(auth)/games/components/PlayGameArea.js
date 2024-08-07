@@ -18,26 +18,28 @@ const priceArray = [
     "70000000",
 ]
 const PlayGameArea = ({ games }) => {
-    const [earned,setEarned]=useState(0)
+    let intervalId;
+    const [earned, setEarned] = useState(0)
     const [letsPlaySound] = useSound('/play.mp3');
     const [correctAnswerSound] = useSound('/correct.mp3');
     const [wrongAnswerSound] = useSound('/wrong.mp3');
-    const [animate,setAnimate]=useState(false)
-    const [stopGame,setStopGame]=useState(false)
+    const [animate, setAnimate] = useState(false)
+    const [stopGame, setStopGame] = useState(false)
     const [answer, setAnswer] = useState('')
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [isCorrect, setIsCorrect] = useState(false)
     const [isWrong, setIsWrong] = useState(false)
-  useEffect(()=>{
-      letsPlaySound()
-  }, [letsPlaySound, games])
+    const [timer, setTimer] = useState(1000);
+    useEffect(() => {
+        letsPlaySound()
+    }, [letsPlaySound, games])
     const handleAnswer = (correctAnswer, answer) => {
         setAnswer(answer)
         setAnimate(true)
         setTimeout(() => {
             if (answer === correctAnswer) {
                 setIsCorrect(true)
-                
+
             } else {
                 setIsWrong(true)
             }
@@ -46,83 +48,104 @@ const PlayGameArea = ({ games }) => {
         setTimeout(() => {
             if (answer === correctAnswer) {
                 correctAnswerSound()
-               setTimeout(() => {
-                   if (currentQuestion < priceArray?.length-1){
-                       setCurrentQuestion(prev => prev + 1)
-                       setAnimate(false)
-                       setAnswer('')
-                       setIsCorrect(false)
-                       setIsWrong(false)
-                   }else {
-                      setAnimate(false)
-                       setAnswer('')
-                       setIsCorrect(false)
-                       setIsWrong(false)
-                       setStopGame(true)
-                   }
-               }, 2000);
-                
+                setTimeout(() => {
+                    if (currentQuestion < priceArray?.length - 1) {
+                        setCurrentQuestion(prev => prev + 1)
+                        setAnimate(false)
+                        setAnswer('')
+                        setIsCorrect(false)
+                        setIsWrong(false)
+                    } else {
+                        setAnimate(false)
+                        setAnswer('')
+                        setIsCorrect(false)
+                        setIsWrong(false)
+                        setStopGame(true)
+                    }
+                }, 2000);
+
             } else {
                 wrongAnswerSound()
-               setTimeout(() => {
-                   setStopGame(true)
-                
-               }, 2000);
+                setTimeout(() => {
+                    setStopGame(true)
+
+                }, 2000);
             }
 
         }, 6000)
 
     }
 
-        useEffect(() => {
-            if (currentQuestion > 0){
-                setEarned(priceArray[currentQuestion-1]);
-            }
-        }, [currentQuestion, priceArray]); 
+    useEffect(() => {
+        if (currentQuestion > 0) {
+            setEarned(priceArray[currentQuestion - 1]);
+        }
+    }, [currentQuestion, priceArray]);
 
-   
+    
+    useEffect(() => {
+        if (timer === 0) return setStopGame(true);
+         intervalId = setInterval(() => {
+            setTimer((prev) => prev - 1);
+        }, 1000);
+        return () => clearInterval(intervalId);
+    }, [timer, setStopGame]);
+
+    useEffect(() => {
+        setTimer(1000);
+    }, [currentQuestion]);
+    const handleLifelineClick=()=>{
+        clearInterval(intervalId);
+        setTimer(timer)
+    }
 
     return (
         <>
-        {stopGame ?
+            {stopGame ?
                 <div className='relative font-medium  z-[10] flex text-xl justify-center items-center gap-4 text-white h-full w-full '>
                     You won: <span className='font-semibold text-2xl'>Rs. {formatNumber(earned)}</span>
-        </div>  :
-        <div className="relative  z-[10] flex items-center gap-4 text-white h-full w-full">
-            <div className='flex-grow flex items-center gap-4 flex-col'>
-                <div className="flex-center w-14 h-14 rounded-full font-semibold text-2xl bg-indigo-800 text-white ">
-                    <Timer currentQuestion={currentQuestion} setStopGame={setStopGame}/>
-                </div>
-                <div className="font-semibold py-4 mb-4">
-                    Q{currentQuestion + 1}. {games?.questions[currentQuestion]?.questionName}
-                </div>
-                <div className="grid grid-cols-2 gap-8">
-                    {games?.questions[currentQuestion]?.options.map((option, index) => (
-                        <Option
-                            isCorrect={isCorrect}
-                            isWrong={isWrong}
-                            handleAnswer={handleAnswer}
-                            answer={answer}
-                            key={index}
-                            correctAnswer={games?.questions[currentQuestion]?.correctAnswer}
-                            option={option}
-                            index={index}
-                            animate={animate} />
-                    ))}
-                </div>
+                </div> :
+                <div className="relative  z-[10] flex items-center gap-4 text-white h-full w-full">
+                    <div className='flex-grow flex items-center gap-4 flex-col'>
+                        <div className="flex justify-end w-full items-center gap-4">
+                            <span className='font-semibold'>Lifelines</span>
+                            <button onClick={handleLifelineClick} className='btn-sm bg-violet-500 rounded-md'>50-50</button>
+                            <button onClick={handleLifelineClick} className='btn-sm bg-violet-500 rounded-md'>Flip</button>
+                            <button onClick={handleLifelineClick} className='btn-sm bg-violet-500 rounded-md'>Phone of friend</button>
+                            <button onClick={handleLifelineClick} className='btn-sm bg-violet-500 rounded-md'>Audience Poll</button>
+                        </div>
+                        <div className="flex-center w-14 h-14 rounded-full font-semibold text-2xl bg-indigo-800 text-white ">
+                            {timer}
+                        </div>
+                        <div className="font-semibold py-4 mb-4">
+                            Q{currentQuestion + 1}. {games?.questions[currentQuestion]?.questionName}
+                        </div>
+                        <div className="grid grid-cols-2 gap-8">
+                            {games?.questions[currentQuestion]?.options.map((option, index) => (
+                                <Option
+                                    isCorrect={isCorrect}
+                                    isWrong={isWrong}
+                                    handleAnswer={handleAnswer}
+                                    answer={answer}
+                                    key={index}
+                                    correctAnswer={games?.questions[currentQuestion]?.correctAnswer}
+                                    option={option}
+                                    index={index}
+                                    animate={animate} />
+                            ))}
+                        </div>
 
-
-            </div>
-            <div className="flex flex-col-reverse  gap-2 py-8 px-4 flex-shrink-0">
-                {priceArray?.map((price, index) => (
-                    <div key={price} className={`text-center text-lg px-8 py-2 font-semibold gap-2 rounded-md ${index === currentQuestion && 'text-white bg-yellow-600'} `}>
-                        <span>Rs. {formatNumber(price)} </span>
                     </div>
-                ))}
+                    <div className="flex flex-col-reverse  gap-2 py-8 px-4 flex-shrink-0">
+                        {priceArray?.map((price, index) => (
+                            <div key={price} className={`text-center text-lg px-8 py-2 font-semibold gap-2 rounded-md ${index === currentQuestion && 'text-white bg-yellow-600'} `}>
+                                <span>Rs. {formatNumber(price)} </span>
+                            </div>
+                        ))}
 
-            </div>
-        </div>
-}
+                    </div>
+                </div>
+            }
         </>
     )
 }

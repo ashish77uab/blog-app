@@ -141,6 +141,7 @@ const CreateQuestionForm = ({ games }) => {
                                                         onBlur={handleBlur}
                                                     />
                                                     <SelectField
+                                                        firstOption={{ label: 'Select Answer', value: '' }}
                                                         label={'Select Answer'}
                                                         options={answerOptions}
                                                         name={`questions[${index}].correctAnswer`}
@@ -148,7 +149,7 @@ const CreateQuestionForm = ({ games }) => {
                                                         onChange={handleChange}
                                                         onBlur={handleBlur} />
                                                     <SelectField
-                                                       firstOption={ { label: 'Select Answer', value: '' }}
+                                                       firstOption={ { label: 'Select Level', value: '' }}
                                                         label={'Select Level'}
                                                         options={levelOptions}
                                                         name={`questions[${index}].level`}

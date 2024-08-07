@@ -42,9 +42,11 @@ model Question {
   questionName  String
   options       String[]
   correctAnswer AnswerType
+  fiftyAnswers  AnswerType[]
   level         Int
   Game          Game?      @relation(fields: [gameId], references: [id])
   gameId        String?    @db.ObjectId
+  isFlipQuestion Boolean @default(false)
 }
 
 model Game {
