@@ -2,7 +2,6 @@
 import { formatNumber } from '@/utils/helpers';
 import React, { useEffect, useRef, useState } from 'react'
 import Option from './Option';
-import Timer from './Timer';
 import useSound from "use-sound";
 
 const priceArray = [
@@ -17,8 +16,27 @@ const priceArray = [
     "10000000",
     "70000000",
 ]
+export const LIFELINES = {
+    FIFTY_FIFTY: '50-50',
+    FLIP: 'Flip',
+    PHONE_A_FRIEND: 'Phone A Friend',
+    AUDIENCE_POLL: 'Audience Poll'
+};
 const PlayGameArea = ({ games }) => {
     let intervalId;
+    const [lifeline, setLifeline] = useState(null);
+    const [completedLifelines, setCompletedLifelines] = useState([]);
+    const [isContinue, setIsContinue] = useState(false);
+
+    const handleLifeline = (type) => {
+        setLifeline(type);
+        if (type===LIFELINES.PHONE_A_FRIEND){
+            clearInterval(intervalId);
+            setTimer(timer)
+            setIsContinue(true)
+        }
+      
+    };
     const [earned, setEarned] = useState(0)
     const [letsPlaySound] = useSound('/play.mp3');
     const [correctAnswerSound] = useSound('/correct.mp3');
@@ -39,7 +57,7 @@ const PlayGameArea = ({ games }) => {
         setTimeout(() => {
             if (answer === correctAnswer) {
                 setIsCorrect(true)
-
+                setCompletedLifelines(prev => [...prev, lifeline])
             } else {
                 setIsWrong(true)
             }
@@ -55,12 +73,14 @@ const PlayGameArea = ({ games }) => {
                         setAnswer('')
                         setIsCorrect(false)
                         setIsWrong(false)
+                        setLifeline(null)
                     } else {
                         setAnimate(false)
                         setAnswer('')
                         setIsCorrect(false)
                         setIsWrong(false)
                         setStopGame(true)
+                        setLifeline(null)
                     }
                 }, 2000);
 
@@ -81,11 +101,18 @@ const PlayGameArea = ({ games }) => {
             setEarned(priceArray[currentQuestion - 1]);
         }
     }, [currentQuestion, priceArray]);
+    useEffect(() => {
+        if (answer) {
+            setEarned(priceArray[currentQuestion - 1]);
+              clearInterval(intervalId);
+              setTimer(timer)
+        }
+    }, [answer]);
 
-    
+
     useEffect(() => {
         if (timer === 0) return setStopGame(true);
-         intervalId = setInterval(() => {
+        intervalId = setInterval(() => {
             setTimer((prev) => prev - 1);
         }, 1000);
         return () => clearInterval(intervalId);
@@ -94,10 +121,25 @@ const PlayGameArea = ({ games }) => {
     useEffect(() => {
         setTimer(1000);
     }, [currentQuestion]);
-    const handleLifelineClick=()=>{
-        clearInterval(intervalId);
-        setTimer(timer)
+    const flipQuestion =
+    {
+        questionName: 'What is the default port for a React application started with create-react-app?',
+        options: [
+            '3000',
+            '8080',
+            '5000',
+            '8000'
+        ],
+        correctAnswer: 'A',
+        level: 1,
+        isFlipQuestion: false
     }
+    const questions = [...games?.questions]
+    if(lifeline===LIFELINES.FLIP){
+        questions[currentQuestion] = flipQuestion
+    }
+    const currentQuestionData = questions[currentQuestion]
+
 
     return (
         <>
@@ -109,26 +151,31 @@ const PlayGameArea = ({ games }) => {
                     <div className='flex-grow flex items-center gap-4 flex-col'>
                         <div className="flex justify-end w-full items-center gap-4">
                             <span className='font-semibold'>Lifelines</span>
-                            <button onClick={handleLifelineClick} className='btn-sm bg-violet-500 rounded-md'>50-50</button>
-                            <button onClick={handleLifelineClick} className='btn-sm bg-violet-500 rounded-md'>Flip</button>
-                            <button onClick={handleLifelineClick} className='btn-sm bg-violet-500 rounded-md'>Phone of friend</button>
-                            <button onClick={handleLifelineClick} className='btn-sm bg-violet-500 rounded-md'>Audience Poll</button>
+                            {Object.values(LIFELINES)?.map((item) => {
+                                const isCompleted = completedLifelines?.includes(item)
+                                return <button disabled={isCompleted||lifeline} onClick={() => {
+                                    handleLifeline(item)
+                                }} className={`btn-sm border-2 border-violet-500  rounded-md ${lifeline === item && 'bg-violet-500 '} ${isCompleted && 'bg-violet-500'}`}>{item}</button>
+
+                            })}
+
                         </div>
                         <div className="flex-center w-14 h-14 rounded-full font-semibold text-2xl bg-indigo-800 text-white ">
                             {timer}
                         </div>
                         <div className="font-semibold py-4 mb-4">
-                            Q{currentQuestion + 1}. {games?.questions[currentQuestion]?.questionName}
+                            Q{currentQuestion + 1}. {currentQuestionData?.questionName}
                         </div>
                         <div className="grid grid-cols-2 gap-8">
-                            {games?.questions[currentQuestion]?.options.map((option, index) => (
+                            {currentQuestionData?.options.map((option, index) => (
                                 <Option
+                                    lifeline={lifeline}
                                     isCorrect={isCorrect}
                                     isWrong={isWrong}
                                     handleAnswer={handleAnswer}
                                     answer={answer}
                                     key={index}
-                                    correctAnswer={games?.questions[currentQuestion]?.correctAnswer}
+                                    correctAnswer={currentQuestionData?.correctAnswer}
                                     option={option}
                                     index={index}
                                     animate={animate} />
